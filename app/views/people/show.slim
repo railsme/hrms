@@ -72,6 +72,14 @@ p
     a href="#{edit_person_path(@person)}"
       i.fa.fa-pencil
 p
+  | Email &nbsp;
+  - if @person.email.present?
+    strong
+      a href="mailto:#{@person.email}" #{@person.email}
+  - else
+    a href="#{edit_person_path(@person)}"
+      i.fa.fa-pencil
+p
   | Facebook &nbsp;
   - if @person.facebook.present?
     strong
@@ -119,7 +127,7 @@ h3
 
 h3
   | Assessments &nbsp;
-  = link_to 'Evaluate', new_assessment_path(person_id: @person.id)
+  = link_to 'Evaluate', new_assessment_path(assessment: { person_id: @person.id })
 - @person.assessments.order(updated_at: :desc).each do |assessment|
   p
     a href="#{edit_assessment_path(assessment)}" #{assessment.updated_at.strftime('%e %b %Y')}
@@ -131,7 +139,7 @@ h3
 
 h3
   | Attachments &nbsp;
-  = link_to 'Add Attachment', new_attachment_path(person_id: @person.id)
+  = link_to 'Add Attachment', new_attachment_path(attachment: { person_id: @person.id })
 - @person.attachments.order(updated_at: :desc).each do |attachment|
   p
     = link_to (attachment.name.present? ? attachment.name : attachment.file_filename), Refile.attachment_url(attachment, :file)
